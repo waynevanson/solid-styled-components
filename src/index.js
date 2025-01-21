@@ -5,7 +5,7 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack,
+  untrack
 } from "solid-js";
 import { Dynamic, isServer, spread } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
@@ -35,7 +35,8 @@ export function useTheme() {
 
 function makeStyled(tag) {
   let _ctx = this || {};
-  return (...args) => {
+
+  const Style = (...args) => {
     const Styled = props => {
       const theme = useContext(ThemeContext);
       const withTheme = mergeProps(props, { theme });
@@ -70,6 +71,7 @@ function makeStyled(tag) {
             },
             ...others
           });
+          makeStyled;
         } else {
           if (_ctx.g == 1) {
             // When using Global Styles we don't want to hydrate the unused nodes
@@ -90,6 +92,12 @@ function makeStyled(tag) {
 
     return Styled;
   };
+
+  Style.attrs = attrs => {
+    return props => Style(Object.assign({}, attrs, props));
+  };
+
+  return Style;
 }
 
 export const styled = new Proxy(makeStyled, {

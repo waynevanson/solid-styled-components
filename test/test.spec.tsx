@@ -39,14 +39,16 @@ describe("Simple Styled", () => {
   });
 
   test("Creates component properly with styles function", () => {
-    const Div = styled("div")<{ bold: boolean; border: number; color: string }>(({ bold, border, color }) => ({
-      color: "steelblue",
-      fontSize: "32px",
-      padding: "5px",
-      border: `${border}px solid ${color}`,
-      backgroundColor: "linen",
-      fontWeight: (bold ? "bold" : 100),
-    }));
+    const Div = styled("div")<{ bold: boolean; border: number; color: string }>(
+      ({ bold, border, color }) => ({
+        color: "steelblue",
+        fontSize: "32px",
+        padding: "5px",
+        border: `${border}px solid ${color}`,
+        backgroundColor: "linen",
+        fontWeight: bold ? "bold" : 100
+      })
+    );
 
     createRoot(() => {
       const v = (
@@ -166,6 +168,20 @@ describe("Simple Styled", () => {
           Testera
         </Div>
       );
+    });
+  });
+
+  describe("attrs", () => {
+    test("single", () => {
+      const Button = styled.input.attrs({
+        type: "button"
+      })`
+        color: steelblue;
+      `;
+
+      createRoot(() => {
+        const v = <Button />;
+      });
     });
   });
 });
