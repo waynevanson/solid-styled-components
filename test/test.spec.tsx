@@ -172,10 +172,22 @@ describe("Simple Styled", () => {
   });
 
   describe("attrs", () => {
-    test("single", () => {
+    test("object", () => {
       const Button = styled.input.attrs({
         type: "button"
       })`
+        color: steelblue;
+      `;
+
+      createRoot(() => {
+        const v = <Button />;
+      });
+    });
+
+    test("fn", () => {
+      const Button = styled.input.attrs(props => ({
+        type: "button"
+      }))`
         color: steelblue;
       `;
 

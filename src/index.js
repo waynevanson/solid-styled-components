@@ -94,7 +94,13 @@ function makeStyled(tag) {
   };
 
   Style.attrs = attrs => {
-    return props => Style(Object.assign({}, attrs, props));
+    return props => {
+      if (typeof attrs === "function") {
+        return Style(Object.assign({}, props, attrs(props)));
+      } else {
+        return Style(Object.assign({}, attrs, props));
+      }
+    };
   };
 
   return Style;

@@ -57,6 +57,7 @@ type TagFn<T> = <P>(
 type StylingFn<T> = StylesFn<T> &
   TagFn<T> & {
     attrs<U extends Partial<T>>(props: U & T): StylingFn<Omit<T, keyof U> & U>;
+    attrs<U extends Partial<T>>(fn: (props: U | T) => U & T): StylingFn<Omit<T, keyof U> & U>;
   };
 export interface Styled {
   <T extends keyof JSX.IntrinsicElements>(
