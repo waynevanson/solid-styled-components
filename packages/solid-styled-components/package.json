@@ -1,0 +1,29 @@
+{
+  "name": "solid-styled-components",
+  "type": "module",
+  "main": "dist/cjs/my-lib.js",
+  "module": "dist/esm/my-lib.js",
+  "types": "dist/types/my-lib.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "solid": "./dist/source/my-lib.jsx",
+      "import": "./dist/esm/my-lib.js",
+      "browser": "./dist/esm/my-lib.js",
+      "require": "./dist/cjs/my-lib.js",
+      "node": "./dist/cjs/my-lib.js"
+    }
+  },
+  "devDependencies": {
+    "rollup": "^4.32.1",
+    "rollup-preset-solid": "^2.0.1",
+    "solid-js": "^1.9.3",
+    "typescript": "~5.6.2",
+    "vitest": "^3.0.4"
+  },
+  "scripts": {
+    "build": "rollup -c"
+  }
+}
