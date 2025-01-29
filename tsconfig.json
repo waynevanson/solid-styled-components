@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/solid-styled-components/tsconfig.json"
+    },
+    {
+      "path": "./apps/playground/tsconfig.json"
+    }
+  ]
+}
