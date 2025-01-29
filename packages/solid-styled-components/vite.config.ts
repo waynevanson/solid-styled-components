@@ -5,5 +5,8 @@ import solid from "vite-plugin-solid"
 export default defineConfig({
   plugins: [solid()],
   resolve: { conditions: ["development", "browser"] },
-  test: { server: { deps: { inline: true } } },
+  test: {
+    server: { deps: { inline: true } },
+    coverage: { provider: "istanbul" },
+  },
 })

@@ -6,11 +6,22 @@ import { DOMElements } from "solid-js/web"
 describe("styled", () => {
   const tags = Array.from(DOMElements.values())
 
-  test.each(tags)("%s", (tag) => {
-    const Component = styled(tag as any)``
-    const screen = render(() => <Component />)
+  describe.each(tags)("%s", (tag) => {
+    test("parameter", () => {
+      const Component = styled(tag as any)``
+      const screen = render(() => <Component />)
 
-    const element = screen.container.children.item(0)
-    expect(element?.localName).toBe(tag)
+      const element = screen.container.children.item(0)
+      expect(element?.localName).toBe(tag)
+    })
+
+    test("index", () => {
+      //@ts-expect-error
+      const Component = styled[tag]``
+      const screen = render(() => <Component />)
+
+      const element = screen.container.children.item(0)
+      expect(element?.localName).toBe(tag)
+    })
   })
 })
