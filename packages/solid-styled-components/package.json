@@ -10,12 +10,12 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index/index.d.ts",
       "solid": "./dist/index/index.jsx",
-      "import": "./dist/index/index.module.js",
       "browser": "./dist/index/index.module.js",
       "require": "./dist/index/index.module.js",
       "node": "./dist/index/index.module.js",
-      "types": "./dist/index/index.d.ts"
+      "import": "./dist/index/index.module.js"
     }
   },
   "devDependencies": {

@@ -1,11 +1,9 @@
 import { createContext, createMemo, JSX, useContext } from "solid-js"
 
-export const ThemeContext = createContext({
-  theme: undefined,
-})
+export const ThemeContext = createContext<DefaultTheme>({})
 
 export interface ThemeProviderProps {
-  theme: undefined
+  theme: DefaultTheme
   children: JSX.Element
 }
 
@@ -18,6 +16,4 @@ export function useTheme() {
   return useContext(ThemeContext)
 }
 
-export interface ThemeContext {
-  readonly theme: unknown
-}
+export interface DefaultTheme {}

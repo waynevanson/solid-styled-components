@@ -9,6 +9,7 @@ import {
 import { Dynamic } from "solid-js/web"
 import { CreateStyled, Styled, StyledArgs } from "./types"
 import { css } from "goober"
+import { useTheme } from "./context"
 
 // g: Global
 // k: Keyframes
@@ -62,14 +63,18 @@ function createStyled<Tag extends keyof JSX.IntrinsicElements>(
 ): Styled<ComponentProps<Tag>> {
   function Styled(...args: StyledArgs) {
     function StyledComponent(props: ComponentProps<Tag>) {
-      const className = createClassName(props, args)
+      const theme = useTheme()
+      const propsWithTheme = createMemo(() => mergeProps(props, { theme }))
 
-      const dynamicProps = createMemo(() =>
-        mergeProps(props, { class: className() })
+      const className = createClassName(propsWithTheme(), args)
+
+      // todo: add `as` props as the component
+      const componentProps = createMemo(() =>
+        mergeProps(propsWithTheme(), { class: className(), component: tag })
       )
 
       //@ts-expect-error
-      return <Dynamic component={tag} {...dynamicProps()} />
+      return <Dynamic {...componentProps()} />
     }
 
     return StyledComponent
