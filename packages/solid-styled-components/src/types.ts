@@ -1,3 +1,4 @@
+import { CSSAttribute } from "goober"
 import { Component, ComponentProps, JSX } from "solid-js"
 
 // props
@@ -6,10 +7,7 @@ export interface StyledComponent<OuterProps extends {}>
 
 // attrs, tempalte string
 export interface Styled<OuterProps extends {}> {
-  (
-    strings: ReadonlyArray<string>,
-    ...expressions: ReadonlyArray<unknown>
-  ): StyledComponent<OuterProps>
+  (...args: StyledArgs): StyledComponent<OuterProps>
 }
 
 export interface CreateStyledComponent {
@@ -23,3 +21,18 @@ export type CreateStyledTag = {
 }
 
 export interface CreateStyled extends CreateStyledComponent, CreateStyledTag {}
+
+export type TemplateExpressionParameter = {}
+
+export type TemplateExpressionValue = string | number
+
+export type TemplateExpression =
+  | ((props: TemplateExpressionParameter) => TemplateExpressionValue)
+  | TemplateExpressionValue
+
+export type StyledArgs =
+  | readonly [styles: CSSAttribute | string]
+  | readonly [
+      styled: TemplateStringsArray,
+      ...expressions: ReadonlyArray<TemplateExpression>
+    ]

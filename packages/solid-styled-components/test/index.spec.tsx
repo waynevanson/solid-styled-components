@@ -24,4 +24,13 @@ describe("styled", () => {
       expect(element?.localName).toBe(tag)
     })
   })
+
+  // how to test where the css goes?
+  describe("class", () => {
+    test("no class property when there are no styles")
+    const Component = styled.div``
+    const screen = render(() => <Component />)
+    const element = screen.container.children.item(0)
+    expect(element).not.toHaveProperty("class")
+  })
 })
