@@ -23,5 +23,3 @@ export type CreateStyledTag = {
 }
 
 export interface CreateStyled extends CreateStyledComponent, CreateStyledTag {}
-
-export interface Theme {}

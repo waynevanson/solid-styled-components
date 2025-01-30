@@ -2,21 +2,13 @@ import { ComponentProps, JSX } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { CreateStyled, Styled } from "./types"
 import { useTheme } from "./context"
-import * as goober from "goober"
-
-export type {
-  ThemeProvider,
-  useTheme,
-  ThemeContext,
-  ThemeProviderProps,
-} from "./context"
 
 function createStyled<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): Styled<ComponentProps<Tag>> {
   function Styled(strings: ReadonlyArray<string>) {
     function StyledComponent(props: ComponentProps<Tag>) {
-      return <Dynamic {...props} component={tag} />
+      return <Dynamic component={tag} {...props} />
     }
 
     return StyledComponent
