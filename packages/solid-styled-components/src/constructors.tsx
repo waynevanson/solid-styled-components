@@ -50,7 +50,7 @@ export function createClassName(
   })
 
   const className = createMemo(() =>
-    [identifier(), classNameFromProps()].filter(Boolean).join(" ")
+    [classNameFromProps(), identifier()].filter(Boolean).join(" ")
   )
 
   return className
