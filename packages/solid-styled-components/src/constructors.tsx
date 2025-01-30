@@ -8,11 +8,9 @@ import {
 } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { CreateStyled, Styled, StyledArgs } from "./types"
-import { useTheme } from "./context"
-import { css, CSSAttribute } from "goober"
+import { css } from "goober"
 
 // g: Global
-// o: Append
 // k: Keyframes
 // optional
 export type GooberFlags = { g: boolean } | { k: boolean } | {}
@@ -29,17 +27,20 @@ export type GooberContext = GooberFlags & {
 const GOOBER_CLASS_REGEXP = /^go[0-9]+/
 
 export function createClassName(
-  props: { class?: string | undefined } | {},
+  props: { class?: string | undefined } | Record<string, any>,
   args: StyledArgs
 ) {
   const classNameFromProps = createMemo(
     () => ("class" in props && props.class) || ""
   )
-  const append = createMemo(() =>
-    GOOBER_CLASS_REGEXP.test(classNameFromProps())
-  )
 
-  const context = createMemo((): GooberContext => ({ o: append(), p: props }))
+  const context = createMemo(
+    (): GooberContext => ({
+      // append
+      o: GOOBER_CLASS_REGEXP.test(classNameFromProps()),
+      p: props,
+    })
+  )
 
   const [identifier, identifierSet] = createSignal("")
 

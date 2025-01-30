@@ -2,5 +2,9 @@
   "packageManager": "pnpm@9.1.4+sha1.2432063d815cfa88fd9fef1d85a445e3f609851d",
   "devDependencies": {
     "vitest": "^3.0.4"
+  },
+  "scripts": {
+    "build": "pnpm recursive run build",
+    "dev": "pnpm --parallel run dev"
   }
 }
