@@ -1,89 +1,60 @@
-import {
-  ComponentProps,
-  createEffect,
-  createMemo,
-  createSignal,
-  JSX,
-  mergeProps,
-} from "solid-js"
+import { ComponentProps, createMemo, JSX, mergeProps } from "solid-js"
 import { Dynamic } from "solid-js/web"
-import { CreateStyled, Styled, StyledArgs } from "./types"
-import { css } from "goober"
+import { createClassName } from "./class-name"
 import { useTheme } from "./context"
+import { attrs } from "./methods"
+import {
+  Styleable,
+  StyleableCallable,
+  StyleableMethods,
+  Styled,
+  Substitute,
+} from "./types"
 
-// g: Global
-// k: Keyframes
-// optional
-export type GooberFlags = { g: boolean } | { k: boolean } | {}
-
-export type GooberContext = GooberFlags & {
-  // Target element
-  t?: unknown
-  // Props from template literals
-  p?: unknown
-
-  o?: boolean
-}
-
-const GOOBER_CLASS_REGEXP = /^go[0-9]+/
-
-export function createClassName(
-  props: { class?: string | undefined } | Record<string, any>,
-  args: StyledArgs
-) {
-  const classNameFromProps = createMemo(
-    () => ("class" in props && props.class) || ""
-  )
-
-  const context = createMemo(
-    (): GooberContext => ({
-      // append
-      o: GOOBER_CLASS_REGEXP.test(classNameFromProps()),
-      p: props,
-    })
-  )
-
-  const [identifier, identifierSet] = createSignal("")
-
-  // todo: this creates a side effect.
-  // should we set this state differently?
-  createEffect(() => {
-    identifierSet(css.apply(context(), args as never))
-  })
-
-  const className = createMemo(() =>
-    [classNameFromProps(), identifier()].filter(Boolean).join(" ")
-  )
-
-  return className
-}
-
-function createStyled<Tag extends keyof JSX.IntrinsicElements>(
+// tag is really just a default for `as` right?
+export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
-): Styled<ComponentProps<Tag>> {
-  function Styled(...args: StyledArgs) {
-    function StyledComponent(props: ComponentProps<Tag>) {
+): StyleableCallable<ComponentProps<Tag>> {
+  return (...args) =>
+    (props) => {
+      // todo: add `as` props as the component
       const theme = useTheme()
       const propsWithTheme = createMemo(() => mergeProps(props, { theme }))
-
       const className = createClassName(propsWithTheme(), args)
 
-      // todo: add `as` props as the component
       const componentProps = createMemo(() =>
-        mergeProps(propsWithTheme(), { class: className(), component: tag })
+        mergeProps(propsWithTheme, {
+          class: className(),
+          component: tag,
+        })
       )
 
-      //@ts-expect-error
+      //@ts-ignore
       return <Dynamic {...componentProps()} />
     }
-
-    return StyledComponent
-  }
-
-  return Styled
 }
 
-export const styled: CreateStyled = new Proxy(createStyled as never, {
+export interface StyledMethods<OuterProps extends {}> {
+  attrs<InnerProps extends Partial<OuterProps>>(
+    attrs: InnerProps
+  ): Styleable<Substitute<OuterProps, InnerProps>>
+}
+
+/**
+ * @summary
+ * Adds the methods from `StylableMethods` onto a `StyleableCallable`,
+ * which creates a `Stylable`.
+ */
+function functionalise<OuterProps extends {}>(
+  callable: StyleableCallable<OuterProps>
+): Styleable<OuterProps> {
+  return Object.assign(callable, {
+    attrs: <InnerProps extends Partial<OuterProps>>(attrs_: InnerProps) =>
+      functionalise(attrs(callable, attrs_)),
+  } satisfies StyleableMethods<OuterProps>)
+}
+
+export const styled: Styled = new Proxy(createStyledFactory as never, {
   get(target, property) {
     if (typeof property === "symbol") {
       throw new Error(
@@ -91,7 +62,10 @@ export const styled: CreateStyled = new Proxy(createStyled as never, {
       )
     }
 
-    //@ts-expect-error
-    return target(property)
+    //@ts-ignore
+    const callable = target(property)
+
+    // allow use of binded methods like `.attrs()`
+    return functionalise(callable)
   },
 })

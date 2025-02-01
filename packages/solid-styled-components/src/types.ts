@@ -1,27 +1,39 @@
 import { CSSAttribute } from "goober"
 import { Component, ComponentProps, JSX } from "solid-js"
 
-// props
-export interface StyledComponent<OuterProps extends {}>
-  extends Component<OuterProps> {}
+// Create a `Stylable` instance.
 
-// attrs, tempalte string
-export interface Styled<OuterProps extends {}> {
-  (...args: StyledArgs): StyledComponent<OuterProps>
-}
-
-export interface CreateStyledComponent {
-  <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): Styled<
+export interface StyledCallable {
+  <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): Styleable<
     ComponentProps<Tag>
   >
 }
 
-export type CreateStyledTag = {
-  [Tag in keyof JSX.IntrinsicElements]: Styled<ComponentProps<Tag>>
+export type StyledTag = {
+  [Tag in keyof JSX.IntrinsicElements]: Styleable<ComponentProps<Tag>>
 }
 
-export interface CreateStyled extends CreateStyledComponent, CreateStyledTag {}
+export interface Styled extends StyledCallable, StyledTag {}
 
+// Can have a style added to it to return a component
+
+export interface StyleableCallable<OuterProps extends {}> {
+  (...styles: StyledArgs): Component<OuterProps>
+}
+
+export interface StyleableMethods<OuterProps extends {}> {
+  attrs<InnerProps extends Partial<OuterProps>>(
+    attrs: InnerProps
+  ): Styleable<Substitute<OuterProps, InnerProps>>
+}
+
+export interface Styleable<OuterProps extends {}>
+  extends StyleableCallable<OuterProps>,
+    StyleableMethods<OuterProps> {}
+
+// Argument for Stylable
+
+// todo: replace with props
 export type TemplateExpressionParameter = {}
 
 export type TemplateExpressionValue = string | number
@@ -36,3 +48,9 @@ export type StyledArgs =
       styled: TemplateStringsArray,
       ...expressions: ReadonlyArray<TemplateExpression>
     ]
+
+// utils
+
+export type TagKind = keyof JSX.IntrinsicElements
+
+export type Substitute<T, U> = Omit<T, keyof U> & U
