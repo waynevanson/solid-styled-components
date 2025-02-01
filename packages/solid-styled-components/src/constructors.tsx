@@ -1,14 +1,22 @@
-import { ComponentProps, createMemo, JSX, mergeProps } from "solid-js"
+import {
+  ComponentProps,
+  createMemo,
+  indexArray,
+  JSX,
+  mergeProps,
+} from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { createClassName } from "./class-name"
 import { useTheme } from "./context"
 import { attrs } from "./methods"
 import {
-  STYLE,
   Styleable,
   StyleableCallable,
   StyleableMethods,
   Styled,
+  StyledArgsProperty,
+  StyledComponent,
+  StyledProps,
   Substitute,
 } from "./types"
 
@@ -17,11 +25,17 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
   return (...args) => {
-    function StyledComponent(props: ComponentProps<Tag>) {
-      // todo: add `as` props as the component
+    function StyledComponent(props: StyledProps<ComponentProps<Tag>>) {
       const theme = useTheme()
-      const className = createClassName(mergeProps(props, { theme }), args)
+      const themed = createMemo(() => mergeProps(props, { theme }))
 
+      const styled = createMemo(() =>
+        (props[StyledArgsProperty] ?? []).concat([args])
+      )
+
+      const className = createClassName(themed() as never, styled())
+
+      // todo: add `as` props as the component
       const componentProps = createMemo(() =>
         mergeProps(props, { class: className(), component: tag })
       )
@@ -30,10 +44,29 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
       return <Dynamic {...componentProps()} />
     }
 
-    StyledComponent[STYLE] = args
-
     return StyledComponent
   }
+}
+
+// we can add our styles to the props,
+// and consume that inside of our real component.
+export function createStyleableComposition<OuterProps extends {}>(
+  Styled: StyledComponent<OuterProps>
+): StyleableCallable<OuterProps> {
+  return (...args) =>
+    (props) => {
+      const styled = createMemo(() => {
+        const styled = props[StyledArgsProperty] ?? []
+        return [...styled, args]
+      })
+
+      const nexts = createMemo(() =>
+        mergeProps(props, { [StyledArgsProperty]: styled() })
+      )
+
+      //@ts-ignore
+      return <Styled {...nexts()} />
+    }
 }
 
 export interface StyledMethods<OuterProps extends {}> {

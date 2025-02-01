@@ -15,9 +15,9 @@ type GooberContext = GooberFlags & {
 
 const GOOBER_CLASS_REGEXP = /^go[0-9]+/
 
-export function createClassName(
-  props: { class?: string | undefined } | Record<string, any>,
-  args: StyledArgs
+export function createClassName<ThemedProps>(
+  props: { class?: string | undefined } & ThemedProps,
+  allArgs: ReadonlyArray<StyledArgs<ThemedProps>>
 ) {
   const classNameFromProps = createMemo(
     () => ("class" in props && props.class) || ""
@@ -31,14 +31,15 @@ export function createClassName(
     })
   )
 
-  const [identifier, identifierSet] = createSignal("")
+  const [identifiers, identifiersSet] = createSignal(new Set())
 
   createEffect(() => {
-    identifierSet(css.apply(context(), args as never))
+    const classNames = allArgs.map((args) => css.apply(context, args as never))
+    identifiersSet(new Set(classNames))
   })
 
   const className = createMemo(() =>
-    [classNameFromProps(), identifier()].filter(Boolean).join(" ")
+    [classNameFromProps(), Array.from(identifiers())].filter(Boolean).join(" ")
   )
 
   return className

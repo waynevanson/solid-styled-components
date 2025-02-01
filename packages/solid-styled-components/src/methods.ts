@@ -1,5 +1,5 @@
 import { mergeProps } from "solid-js"
-import { Styleable, StyleableCallable } from "./types"
+import { StyleableCallable } from "./types"
 
 export function contramap<PrevProps extends {}, NextProps extends {}>(
   target: StyleableCallable<PrevProps>,
@@ -28,3 +28,7 @@ export function attrs<
       ) as never
   )
 }
+
+// Component(props) -> (() => Component(props))
+
+// could pass the ...args via props?

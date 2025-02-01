@@ -1,12 +1,19 @@
 import { CSSAttribute } from "goober"
 import { Component, ComponentProps, JSX } from "solid-js"
 
+export type StyledProps<OuterProps> = OuterProps & {
+  [StyledArgsProperty]?: ReadonlyArray<StyledArgs<OuterProps>>
+}
+
 // Create a `Stylable` instance.
 
 export interface StyledCallable {
   <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): Styleable<
     ComponentProps<Tag>
   >
+  <OuterProps extends {}>(
+    target: StyledComponent<OuterProps>
+  ): Styleable<OuterProps>
 }
 
 export type StyledTag = {
@@ -35,7 +42,7 @@ export interface Styleable<OuterProps extends {}>
   extends StyleableCallable<OuterProps>,
     StyleableMethods<OuterProps> {}
 
-export const STYLE = Symbol("STYLED_ARGS")
+export const StyledArgsProperty = Symbol("StyledArgsApplication")
 
 // Components that have been styled
 // do I need to get style from parent? gotta store that tage internall somewhere..
@@ -45,9 +52,7 @@ export const STYLE = Symbol("STYLED_ARGS")
 // I don't contain a class name yet because props haven't been generated yet.
 // "
 export interface StyledComponent<OuterProps extends {}>
-  extends Component<OuterProps> {
-  readonly [STYLE]: StyledArgs<OuterProps>
-}
+  extends Component<StyledProps<OuterProps>> {}
 
 // Argument for Stylable
 
@@ -60,10 +65,10 @@ export type TemplateExpression<OuterProps> =
   | TemplateExpressionValue
 
 export type StyleArgValue = CSSAttribute | string
-export type StyleArg<OuterProps> =
-  | StyleArgValue
-  | ((props: OuterProps) => StyleArgValue)
-
+export type OneOrMany<T> = T | ReadonlyArray<T>
+export type StyleArg<OuterProps> = OneOrMany<
+  StyleArgValue | ((props: OuterProps) => StyleArgValue)
+>
 export type StyledArgs<OuterProps> =
   | readonly [styles: StyleArg<OuterProps>]
   | readonly [
