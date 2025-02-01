@@ -18,7 +18,7 @@ export interface Styled extends StyledCallable, StyledTag {}
 // Can have a style added to it to return a component
 
 export interface StyleableCallable<OuterProps extends {}> {
-  (...styles: StyledArgs<OuterProps>): Component<OuterProps>
+  (...styles: StyledArgs<OuterProps>): StyledComponent<OuterProps>
 }
 
 export interface StyleableMethods<OuterProps extends {}> {
@@ -34,6 +34,20 @@ export interface StyleableMethods<OuterProps extends {}> {
 export interface Styleable<OuterProps extends {}>
   extends StyleableCallable<OuterProps>,
     StyleableMethods<OuterProps> {}
+
+export const STYLE = Symbol("STYLED_ARGS")
+
+// Components that have been styled
+// do I need to get style from parent? gotta store that tage internall somewhere..
+
+// "
+// I'm styled so that means we gotta make the ...args I consumed earlier accessible
+// I don't contain a class name yet because props haven't been generated yet.
+// "
+export interface StyledComponent<OuterProps extends {}>
+  extends Component<OuterProps> {
+  readonly [STYLE]: StyledArgs<OuterProps>
+}
 
 // Argument for Stylable
 

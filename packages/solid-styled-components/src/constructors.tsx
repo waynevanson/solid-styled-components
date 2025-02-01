@@ -4,6 +4,7 @@ import { createClassName } from "./class-name"
 import { useTheme } from "./context"
 import { attrs } from "./methods"
 import {
+  STYLE,
   Styleable,
   StyleableCallable,
   StyleableMethods,
@@ -15,8 +16,8 @@ import {
 export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
-  return (...args) =>
-    (props) => {
+  return (...args) => {
+    function StyledComponent(props: ComponentProps<Tag>) {
       // todo: add `as` props as the component
       const theme = useTheme()
       const className = createClassName(mergeProps(props, { theme }), args)
@@ -28,6 +29,11 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
       //@ts-ignore
       return <Dynamic {...componentProps()} />
     }
+
+    StyledComponent[STYLE] = args
+
+    return StyledComponent
+  }
 }
 
 export interface StyledMethods<OuterProps extends {}> {
