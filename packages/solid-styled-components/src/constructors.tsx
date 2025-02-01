@@ -22,10 +22,7 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
       const className = createClassName(mergeProps(props, { theme }), args)
 
       const componentProps = createMemo(() =>
-        mergeProps(props, {
-          class: className(),
-          component: tag,
-        })
+        mergeProps(props, { class: className(), component: tag })
       )
 
       //@ts-ignore

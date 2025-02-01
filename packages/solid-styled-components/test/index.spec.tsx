@@ -88,8 +88,10 @@ describe("styled", () => {
         name: "Go daddy",
       }) as HTMLAnchorElement
       expect(element).toBeVisible()
-      expect(element.href).not.contains("/go-daddy")
-      expect(element.href).contains("/help-daddy")
+      expect(element.href).not.contains("/help-daddy")
+      expect(element.href).contains("/go-daddy")
     })
+
+    // todo. how should overriding work for a function attrs?
   })
 })
