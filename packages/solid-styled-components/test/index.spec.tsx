@@ -1,5 +1,5 @@
 import { styled } from "../src"
-import { describe, test, expect } from "vitest"
+import { describe, test, expect, expectTypeOf, assertType } from "vitest"
 import { render } from "@solidjs/testing-library"
 import { DOMElements } from "solid-js/web"
 
@@ -63,7 +63,7 @@ describe("styled", () => {
   })
 
   describe("attrs", () => {
-    test("simple", () => {
+    test("props are added to the component", () => {
       const Linked = styled.a.attrs({
         href: "/go-daddy",
         children: "Go daddy",
@@ -77,21 +77,14 @@ describe("styled", () => {
       expect(element.href).contains("/go-daddy")
     })
 
-    test("simple", () => {
+    test("overriding props ensures users can't add their own in", () => {
       const Linked = styled.a.attrs({
         href: "/go-daddy",
         children: "Go daddy",
       })``
 
-      const screen = render(() => <Linked href="/help-daddy" />)
-      const element = screen.getByRole("link", {
-        name: "Go daddy",
-      }) as HTMLAnchorElement
-      expect(element).toBeVisible()
-      expect(element.href).not.contains("/help-daddy")
-      expect(element.href).contains("/go-daddy")
+      // @ts-expect-error
+      assertType(<Linked hello="" />)
     })
-
-    // todo. how should overriding work for a function attrs?
   })
 })

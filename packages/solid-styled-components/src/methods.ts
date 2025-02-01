@@ -1,5 +1,5 @@
 import { mergeProps } from "solid-js"
-import { Styleable, StyleableCallable, Substitute } from "./types"
+import { Styleable, StyleableCallable } from "./types"
 
 export function contramap<PrevProps extends {}, NextProps extends {}>(
   target: Styleable<PrevProps>,
@@ -16,7 +16,7 @@ export function attrs<
 >(
   target: StyleableCallable<OuterProps>,
   attrs: AttrProps
-): StyleableCallable<Substitute<OuterProps, Partial<AttrProps>>> {
+): StyleableCallable<Omit<OuterProps, keyof AttrProps>> {
   return (...args) =>
     (next) =>
       target(...args)(mergeProps(next, attrs) as never)
