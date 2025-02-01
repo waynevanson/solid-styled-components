@@ -22,9 +22,9 @@ export interface StyleableCallable<OuterProps extends {}> {
 }
 
 export interface StyleableMethods<OuterProps extends {}> {
-  attrs<InnerProps extends Partial<OuterProps>>(
+  attrs<InnerProps extends Partial<OuterProps> & {}>(
     attrs: InnerProps
-  ): Styleable<Substitute<OuterProps, InnerProps>>
+  ): Styleable<Substitute<OuterProps, Partial<InnerProps>>>
 }
 
 export interface Styleable<OuterProps extends {}>

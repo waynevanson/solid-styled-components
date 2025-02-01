@@ -19,11 +19,10 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
     (props) => {
       // todo: add `as` props as the component
       const theme = useTheme()
-      const propsWithTheme = createMemo(() => mergeProps(props, { theme }))
-      const className = createClassName(propsWithTheme(), args)
+      const className = createClassName(mergeProps(props, { theme }), args)
 
       const componentProps = createMemo(() =>
-        mergeProps(propsWithTheme, {
+        mergeProps(props, {
           class: className(),
           component: tag,
         })

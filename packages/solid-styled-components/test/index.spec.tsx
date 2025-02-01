@@ -61,4 +61,17 @@ describe("styled", () => {
       expect(element).toHaveProperty("className", `${className} go2856660522`)
     })
   })
+
+  describe("attrs", () => {
+    test("simple", () => {
+      const Linked = styled.a.attrs({
+        href: "/go-daddy",
+        children: "Go daddy",
+      })``
+
+      const screen = render(() => <Linked />)
+      const element = screen.getByRole("link", { name: "Go daddy" })
+      expect(element).toBeVisible()
+    })
+  })
 })
