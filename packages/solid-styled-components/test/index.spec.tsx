@@ -86,5 +86,19 @@ describe("styled", () => {
       // @ts-expect-error
       assertType(<Linked hello="" />)
     })
+
+    test("props can be referenced in components", () => {
+      const Linked = styled.a.attrs((props) => ({
+        href: (props.href ?? "") + "/daddy",
+        children: (props.children ?? "") + ", Daddy?",
+      }))``
+
+      const screen = render(() => <Linked href="/go">Go</Linked>)
+      const element = screen.getByRole("link", {
+        name: "Go, Daddy?",
+      }) as HTMLAnchorElement
+      expect(element).toBeVisible()
+      expect(element.href).contains("/go/daddy")
+    })
   })
 })

@@ -18,13 +18,17 @@ export interface Styled extends StyledCallable, StyledTag {}
 // Can have a style added to it to return a component
 
 export interface StyleableCallable<OuterProps extends {}> {
-  (...styles: StyledArgs): Component<OuterProps>
+  (...styles: StyledArgs<OuterProps>): Component<OuterProps>
 }
 
 export interface StyleableMethods<OuterProps extends {}> {
   attrs<InnerProps extends Partial<OuterProps> & {}>(
     attrs: InnerProps
   ): Styleable<Omit<OuterProps, keyof InnerProps>>
+
+  attrs<InnerProps extends Partial<OuterProps> & {}>(
+    attrs: (props: OuterProps) => InnerProps
+  ): Styleable<Substitute<OuterProps, InnerProps>>
 }
 
 export interface Styleable<OuterProps extends {}>
@@ -34,23 +38,28 @@ export interface Styleable<OuterProps extends {}>
 // Argument for Stylable
 
 // todo: replace with props
-export type TemplateExpressionParameter = {}
 
 export type TemplateExpressionValue = string | number
 
-export type TemplateExpression =
-  | ((props: TemplateExpressionParameter) => TemplateExpressionValue)
+export type TemplateExpression<OuterProps> =
+  | ((props: OuterProps) => TemplateExpressionValue)
   | TemplateExpressionValue
 
-export type StyledArgs =
-  | readonly [styles: CSSAttribute | string]
+export type StyleArgValue = CSSAttribute | string
+export type StyleArg<OuterProps> =
+  | StyleArgValue
+  | ((props: OuterProps) => StyleArgValue)
+
+export type StyledArgs<OuterProps> =
+  | readonly [styles: StyleArg<OuterProps>]
   | readonly [
-      styled: TemplateStringsArray,
-      ...expressions: ReadonlyArray<TemplateExpression>
+      styles: TemplateStringsArray,
+      ...expressions: ReadonlyArray<OuterProps>
     ]
 
 // utils
 
 export type TagKind = keyof JSX.IntrinsicElements
 
+// todo: use fast omit
 export type Substitute<T, U> = Omit<T, keyof U> & U
