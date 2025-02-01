@@ -19,5 +19,5 @@ export function attrs<
 ): StyleableCallable<Substitute<OuterProps, Partial<AttrProps>>> {
   return (...args) =>
     (next) =>
-      target(...args)(mergeProps(next, attrs) as never)
+      target(...args)(mergeProps(attrs, next) as never)
 }

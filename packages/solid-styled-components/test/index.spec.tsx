@@ -70,8 +70,26 @@ describe("styled", () => {
       })``
 
       const screen = render(() => <Linked />)
-      const element = screen.getByRole("link", { name: "Go daddy" })
+      const element = screen.getByRole("link", {
+        name: "Go daddy",
+      }) as HTMLAnchorElement
       expect(element).toBeVisible()
+      expect(element.href).contains("/go-daddy")
+    })
+
+    test("simple", () => {
+      const Linked = styled.a.attrs({
+        href: "/go-daddy",
+        children: "Go daddy",
+      })``
+
+      const screen = render(() => <Linked href="/help-daddy" />)
+      const element = screen.getByRole("link", {
+        name: "Go daddy",
+      }) as HTMLAnchorElement
+      expect(element).toBeVisible()
+      expect(element.href).not.contains("/go-daddy")
+      expect(element.href).contains("/help-daddy")
     })
   })
 })
