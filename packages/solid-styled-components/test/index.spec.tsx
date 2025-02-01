@@ -101,4 +101,40 @@ describe("styled", () => {
       expect(element.href).contains("/go/daddy")
     })
   })
+
+  describe("composition", () => {
+    test("one level deep", () => {
+      const First = styled.a.attrs((props) => ({
+        href: (props.href ?? "") + "/daddy",
+        children: (props.children ?? "") + ", Daddy?",
+      }))``
+
+      const Second = styled(First)``
+
+      const screen = render(() => <Second href="/go">Go</Second>)
+      const element = screen.getByRole("link", {
+        name: "Go, Daddy?",
+      }) as HTMLAnchorElement
+      expect(element).toBeVisible()
+      expect(element.href).contains("/go/daddy")
+    })
+
+    test("two levels deep", () => {
+      const First = styled.a.attrs((props) => ({
+        href: (props.href ?? "") + "/daddy",
+        children: (props.children ?? "") + ", Daddy?",
+      }))``
+
+      const Second = styled(First)``
+
+      const Third = styled(Second)``
+
+      const screen = render(() => <Third href="/go">Go</Third>)
+      const element = screen.getByRole("link", {
+        name: "Go, Daddy?",
+      }) as HTMLAnchorElement
+      expect(element).toBeVisible()
+      expect(element.href).contains("/go/daddy")
+    })
+  })
 })

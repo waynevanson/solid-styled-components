@@ -69,6 +69,14 @@ export function createStyleableComposition<OuterProps extends {}>(
     }
 }
 
+function bro(target) {
+  if (typeof target === "string") {
+    return createStyledFactory(target)
+  } else {
+    return createStyleableComposition(target)
+  }
+}
+
 export interface StyledMethods<OuterProps extends {}> {
   attrs<InnerProps extends Partial<OuterProps>>(
     attrs: InnerProps
@@ -89,7 +97,7 @@ function functionalise<OuterProps extends {}>(
   } satisfies StyleableMethods<OuterProps>)
 }
 
-export const styled: Styled = new Proxy(createStyledFactory as never, {
+export const styled: Styled = new Proxy(bro as never, {
   get(target, property) {
     if (typeof property === "symbol") {
       throw new Error(
