@@ -90,26 +90,6 @@ function createStyled(target: string | Function) {
   }
 }
 
-export interface StyledMethods<OuterProps extends {}> {
-  attrs<InnerProps extends Partial<OuterProps>>(
-    attrs: InnerProps
-  ): Styleable<Substitute<OuterProps, InnerProps>>
-}
-
-/**
- * @summary
- * Adds the methods from `StylableMethods` onto a `StyleableCallable`,
- * which creates a `Styleable`.
- */
-function functionalise<OuterProps extends {}>(
-  callable: StyleableCallable<OuterProps>
-): Styleable<OuterProps> {
-  return Object.assign(callable, {
-    attrs: <InnerProps extends Partial<OuterProps>>(attrs_: InnerProps) =>
-      functionalise(attrs(callable, attrs_)),
-  } satisfies StyleableMethods<OuterProps>)
-}
-
 export const styled: Styled = new Proxy(createStyled as any, {
   get(target, property) {
     if (typeof property === "symbol") {
@@ -125,3 +105,17 @@ export const styled: Styled = new Proxy(createStyled as any, {
     return functionalise(callable)
   },
 })
+
+/**
+ * @summary
+ * Adds the methods from `StylableMethods` onto a `StyleableCallable`,
+ * which creates a `Styleable`.
+ */
+function functionalise<OuterProps extends {}>(
+  callable: StyleableCallable<OuterProps>
+): Styleable<OuterProps> {
+  return Object.assign(callable, {
+    attrs: <InnerProps extends Partial<OuterProps>>(attrs_: InnerProps) =>
+      functionalise(attrs(callable, attrs_)),
+  } satisfies StyleableMethods<OuterProps>)
+}

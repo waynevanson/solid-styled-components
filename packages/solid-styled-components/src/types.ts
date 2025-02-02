@@ -2,15 +2,30 @@ import { Component, ComponentProps, JSX } from "solid-js"
 import { StyledArgs } from "./styles"
 
 export type StyledProps<OuterProps> = OuterProps & {
+  /**
+   * @summary
+   * A property accessible only by the authors,
+   * which allows combining styles from multiple StyledComponent's.
+   */
   [StyledArgsProperty]?: ReadonlyArray<StyledArgs<OuterProps>>
 }
 
 // Create a `Stylable` instance.
 
 export interface StyledCallable {
+  /**
+   * @summary
+   * Create a Styleable component from a an element tag name.
+   */
   <Tag extends keyof JSX.IntrinsicElements>(tag: Tag): Styleable<
     ComponentProps<Tag>
   >
+
+  /**
+   * @summary
+   * Create a Styleable component from an existing StyledComponent,
+   * providing an inheritence mechanism.
+   */
   <OuterProps extends {}>(
     target: StyledComponent<OuterProps>
   ): Styleable<OuterProps>
@@ -29,6 +44,28 @@ export interface StyleableCallable<OuterProps extends {}> {
 }
 
 export interface StyleableMethods<OuterProps extends {}> {
+  /**
+   * @summary
+   * Create a new Styleable with props which override props provided by users.
+   *
+   * To derive props from existing, use  the function syntax instead
+   *
+   * `(props) => ({ /* new props *\/})`
+   *
+   * @example
+   * ```tsx
+   * import { styled } from 'styled-components-solid'
+   *
+   * // The link will ALWAYS be world.
+   * const Component = styled.a.attrs({ href: "/hello"})``
+   *
+   * // works!
+   * const First = () => <Component />
+   *
+   * // error - `href` does not exist on type `Component`
+   * const Second = () => <Component href="/world" />
+   * ```
+   */
   attrs<InnerProps extends Partial<OuterProps> & {}>(
     attrs: InnerProps
   ): Styleable<FastOmit<OuterProps, keyof InnerProps>>
