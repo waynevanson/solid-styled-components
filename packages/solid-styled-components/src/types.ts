@@ -33,6 +33,9 @@ export interface StyleableMethods<OuterProps extends {}> {
     attrs: InnerProps
   ): Styleable<Omit<OuterProps, keyof InnerProps>>
 
+  // todo: can we check the input props to see if we've used them?
+  // if the return contains props that are part of the component (not new ones)
+  // then enforce that users need to add their own types.
   attrs<InnerProps extends Partial<OuterProps> & {}>(
     attrs: (props: OuterProps) => InnerProps
   ): Styleable<Substitute<OuterProps, InnerProps>>
@@ -55,8 +58,6 @@ export interface StyledComponent<OuterProps extends {}>
   extends Component<StyledProps<OuterProps>> {}
 
 // Argument for Stylable
-
-// todo: replace with props
 
 export type TemplateExpressionValue = string | number
 
