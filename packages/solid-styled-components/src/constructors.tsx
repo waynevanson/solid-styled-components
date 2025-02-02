@@ -21,7 +21,7 @@ import {
 } from "./types"
 
 // tag is really just a default for `as` right?
-export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
+function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
   return (...args) => {
@@ -50,7 +50,7 @@ export function createStyledFactory<Tag extends keyof JSX.IntrinsicElements>(
 
 // we can add our styles to the props,
 // and consume that inside of our real component.
-export function createStyleableComposition<OuterProps extends {}>(
+function createStyleableComposition<OuterProps extends {}>(
   Styled: StyledComponent<OuterProps>
 ): StyleableCallable<OuterProps> {
   return (...args) =>
@@ -69,11 +69,11 @@ export function createStyleableComposition<OuterProps extends {}>(
     }
 }
 
-function bro(target) {
+function createStyled(target: string | Function) {
   if (typeof target === "string") {
-    return createStyledFactory(target)
+    return createStyledTag(target as never)
   } else {
-    return createStyleableComposition(target)
+    return createStyleableComposition(target as never)
   }
 }
 
@@ -97,7 +97,7 @@ function functionalise<OuterProps extends {}>(
   } satisfies StyleableMethods<OuterProps>)
 }
 
-export const styled: Styled = new Proxy(bro as never, {
+export const styled: Styled = new Proxy(createStyled as never, {
   get(target, property) {
     if (typeof property === "symbol") {
       throw new Error(

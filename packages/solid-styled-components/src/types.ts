@@ -69,11 +69,11 @@ export type OneOrMany<T> = T | ReadonlyArray<T>
 export type StyleArg<OuterProps> = OneOrMany<
   StyleArgValue | ((props: OuterProps) => StyleArgValue)
 >
-export type StyledArgs<OuterProps> =
-  | readonly [styles: StyleArg<OuterProps>]
+export type StyledArgs<ThemedProps> =
+  | readonly [styles: StyleArg<ThemedProps>]
   | readonly [
       styles: TemplateStringsArray,
-      ...expressions: ReadonlyArray<OuterProps>
+      ...expressions: ReadonlyArray<ThemedProps>
     ]
 
 // utils
