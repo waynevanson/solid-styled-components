@@ -1,5 +1,5 @@
 import { mergeProps } from "solid-js"
-import { StyleableCallable } from "./types"
+import { FastOmit, StyleableCallable } from "./types"
 
 export function contramap<PrevProps extends {}, NextProps extends {}>(
   target: StyleableCallable<PrevProps>,
@@ -18,7 +18,7 @@ export function attrs<
 >(
   target: StyleableCallable<OuterProps>,
   attrs: AttrProps | ((props: OuterProps) => AttrProps)
-): StyleableCallable<Omit<OuterProps, keyof AttrProps>> {
+): StyleableCallable<FastOmit<OuterProps, keyof AttrProps>> {
   return contramap(
     target,
     (props) =>

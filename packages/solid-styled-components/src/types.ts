@@ -31,7 +31,7 @@ export interface StyleableCallable<OuterProps extends {}> {
 export interface StyleableMethods<OuterProps extends {}> {
   attrs<InnerProps extends Partial<OuterProps> & {}>(
     attrs: InnerProps
-  ): Styleable<Omit<OuterProps, keyof InnerProps>>
+  ): Styleable<FastOmit<OuterProps, keyof InnerProps>>
 
   // todo: can we check the input props to see if we've used them?
   // if the return contains props that are part of the component (not new ones)
@@ -81,5 +81,9 @@ export type StyledArgs<ThemedProps> =
 
 export type TagKind = keyof JSX.IntrinsicElements
 
+export type FastOmit<T extends object, U extends string | number | symbol> = {
+  [K in keyof T as K extends U ? never : K]: T[K]
+}
+
 // todo: use fast omit
-export type Substitute<T, U> = Omit<T, keyof U> & U
+export type Substitute<T extends {}, U extends {}> = FastOmit<T, keyof U> & U
