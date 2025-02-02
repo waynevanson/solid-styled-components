@@ -30,8 +30,8 @@ import {
 function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
-  return (...styles) => {
-    function StyledComponent(props: StyledProps<ComponentProps<Tag>>) {
+  return (...styles) =>
+    (props: StyledProps<ComponentProps<Tag>>) => {
       const theme = useTheme()
       const themed = createMemo(() => mergeProps(props, { theme }))
 
@@ -49,9 +49,6 @@ function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
       //@ts-ignore
       return <Dynamic {...componentProps()} />
     }
-
-    return StyledComponent
-  }
 }
 
 /**

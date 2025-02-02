@@ -1,5 +1,5 @@
-import { CSSAttribute } from "goober"
 import { Component, ComponentProps, JSX } from "solid-js"
+import { StyledArgs } from "./styles"
 
 export type StyledProps<OuterProps> = OuterProps & {
   [StyledArgsProperty]?: ReadonlyArray<StyledArgs<OuterProps>>
@@ -59,24 +59,6 @@ export interface StyledComponent<OuterProps extends {}>
 
 // Argument for Stylable
 
-export type TemplateExpressionValue = string | number
-
-export type TemplateExpression<OuterProps> =
-  | ((props: OuterProps) => TemplateExpressionValue)
-  | TemplateExpressionValue
-
-export type StyleArgValue = CSSAttribute | string
-export type OneOrMany<T> = T | ReadonlyArray<T>
-export type StyleArg<OuterProps> = OneOrMany<
-  StyleArgValue | ((props: OuterProps) => StyleArgValue)
->
-export type StyledArgs<ThemedProps> =
-  | readonly [styles: StyleArg<ThemedProps>]
-  | readonly [
-      styles: TemplateStringsArray,
-      ...expressions: ReadonlyArray<ThemedProps>
-    ]
-
 // utils
 
 export type TagKind = keyof JSX.IntrinsicElements
@@ -85,5 +67,4 @@ export type FastOmit<T extends object, U extends string | number | symbol> = {
   [K in keyof T as K extends U ? never : K]: T[K]
 }
 
-// todo: use fast omit
 export type Substitute<T extends {}, U extends {}> = FastOmit<T, keyof U> & U

@@ -1,17 +1,22 @@
 import { mergeProps } from "solid-js"
 import { FastOmit, StyleableCallable } from "./types"
 
+/**
+ * @summary
+ * Applies a function to change the signature of the component props.
+ * @param target Styleable
+ * @param contramap
+ * @returns
+ */
 export function contramap<PrevProps extends {}, NextProps extends {}>(
   target: StyleableCallable<PrevProps>,
   contramap: (next: NextProps) => PrevProps
 ): StyleableCallable<NextProps> {
   return (...style) =>
     (next) =>
-      //@ts-expect-error
-      target(...style)(contramap(next))
+      target(...(style as any))(contramap(next))
 }
 
-// use contramap
 export function attrs<
   OuterProps extends {},
   AttrProps extends Partial<OuterProps>
@@ -28,7 +33,3 @@ export function attrs<
       ) as never
   )
 }
-
-// Component(props) -> (() => Component(props))
-
-// could pass the ...styles via props?
