@@ -1,10 +1,4 @@
-import {
-  ComponentProps,
-  createMemo,
-  indexArray,
-  JSX,
-  mergeProps,
-} from "solid-js"
+import { ComponentProps, createMemo, JSX, mergeProps } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { createClassName } from "./class-name"
 import { useTheme } from "./context"
@@ -20,7 +14,19 @@ import {
   Substitute,
 } from "./types"
 
+/**
+ * @summary
+ * Create a Styleable instance given a tag name.
+ *
+ * @description
+ * Under the hood will eventually create a component that will create the styles provided in later steps,
+ * and apply them to the underlying element as a class name using Goober's CSS API.
+ *
+ * @param tag String related to an element tag
+ * @returns
+ */
 // tag is really just a default for `as` right?
+// todo: support custom components.
 function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
@@ -48,8 +54,16 @@ function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
   }
 }
 
-// we can add our styles to the props,
-// and consume that inside of our real component.
+/**
+ * @summary
+ *
+ * @description
+ * Under the hood, this applies a hidden property that prepends the previous style args
+ * to props so that the underlying StyledComponent can consume when the component is called.
+ *
+ * @param Styled
+ * @returns
+ */
 function createStyleableComposition<OuterProps extends {}>(
   Styled: StyledComponent<OuterProps>
 ): StyleableCallable<OuterProps> {
