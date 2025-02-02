@@ -51,7 +51,7 @@ export const StyledArgsProperty = Symbol("StyledArgsApplication")
 // do I need to get style from parent? gotta store that tage internall somewhere..
 
 // "
-// I'm styled so that means we gotta make the ...args I consumed earlier accessible
+// I'm styled so that means we gotta make the ...styles I consumed earlier accessible
 // I don't contain a class name yet because props haven't been generated yet.
 // "
 export interface StyledComponent<OuterProps extends {}>

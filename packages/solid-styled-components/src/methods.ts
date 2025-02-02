@@ -5,10 +5,10 @@ export function contramap<PrevProps extends {}, NextProps extends {}>(
   target: StyleableCallable<PrevProps>,
   contramap: (next: NextProps) => PrevProps
 ): StyleableCallable<NextProps> {
-  return (...args) =>
+  return (...style) =>
     (next) =>
       //@ts-expect-error
-      target(...args)(contramap(next))
+      target(...style)(contramap(next))
 }
 
 // use contramap
@@ -31,4 +31,4 @@ export function attrs<
 
 // Component(props) -> (() => Component(props))
 
-// could pass the ...args via props?
+// could pass the ...styles via props?

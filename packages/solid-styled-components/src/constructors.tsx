@@ -30,13 +30,13 @@ import {
 function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
 ): StyleableCallable<ComponentProps<Tag>> {
-  return (...args) => {
+  return (...styles) => {
     function StyledComponent(props: StyledProps<ComponentProps<Tag>>) {
       const theme = useTheme()
       const themed = createMemo(() => mergeProps(props, { theme }))
 
       const styled = createMemo(() =>
-        (props[StyledArgsProperty] ?? []).concat([args])
+        (props[StyledArgsProperty] ?? []).concat([styles])
       )
 
       const className = createClassName(themed() as never, styled())
@@ -69,11 +69,11 @@ function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
 function createStyleableComposition<OuterProps extends {}>(
   Styled: StyledComponent<OuterProps>
 ): StyleableCallable<OuterProps> {
-  return (...args) =>
+  return (...styles) =>
     (props) => {
       const styled = createMemo(() => {
         const styled = props[StyledArgsProperty] ?? []
-        return [...styled, args]
+        return [...styled, styles]
       })
 
       const nexts = createMemo(() =>
