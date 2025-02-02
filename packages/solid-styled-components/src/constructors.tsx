@@ -56,6 +56,8 @@ function createStyledTag<Tag extends keyof JSX.IntrinsicElements>(
 
 /**
  * @summary
+ * Create a new Styleable from a component that has already been styled.
+ * This feels like a monadic bind.
  *
  * @description
  * Under the hood, this applies a hidden property that prepends the previous style args
@@ -100,7 +102,7 @@ export interface StyledMethods<OuterProps extends {}> {
 /**
  * @summary
  * Adds the methods from `StylableMethods` onto a `StyleableCallable`,
- * which creates a `Stylable`.
+ * which creates a `Styleable`.
  */
 function functionalise<OuterProps extends {}>(
   callable: StyleableCallable<OuterProps>
@@ -111,7 +113,7 @@ function functionalise<OuterProps extends {}>(
   } satisfies StyleableMethods<OuterProps>)
 }
 
-export const styled: Styled = new Proxy(createStyled as never, {
+export const styled: Styled = new Proxy(createStyled as any, {
   get(target, property) {
     if (typeof property === "symbol") {
       throw new Error(
@@ -119,7 +121,7 @@ export const styled: Styled = new Proxy(createStyled as never, {
       )
     }
 
-    //@ts-ignore
+    // transforms syntax of `styled.div` into `styled("div")`
     const callable = target(property)
 
     // allow use of binded methods like `.attrs()`
