@@ -107,7 +107,7 @@ describe("styled", () => {
         children: props.issues ? "Daddy?" : "",
       }))``
 
-      const screen = render(() => <Linked issues={true} />)
+      const screen = render(() => <Linked issues />)
       const element = screen.getByRole("link", {
         name: "Daddy?",
       }) as HTMLAnchorElement

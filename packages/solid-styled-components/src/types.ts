@@ -89,23 +89,6 @@ export interface StyleableMethods<OuterProps extends {}> {
   ): Styleable<FastOmit<OuterProps, keyof InnerProps>>
 }
 
-// How do i want attrs to work?
-// I want to use it as composition for styled arguments,
-// without passing to child component. that's the challenge.
-// would need another set of props. let's ignor ethat for now.
-
-// leave props
-// .attrs<{ name?: string }>({ })
-
-// remove props
-// .attrs<{ name: string }>({ name: "string" })
-
-// add arg, remove children
-// .attrs((props: { name: string }) => ({ children: props.name }))
-
-// add arg with props, remove children
-// .attrs<{name: string}>((props) => ({ children: props.name }))
-
 export interface Styleable<OuterProps extends {}>
   extends StyleableCallable<OuterProps>,
     StyleableMethods<OuterProps> {}
