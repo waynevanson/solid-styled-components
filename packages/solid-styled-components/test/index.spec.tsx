@@ -1,5 +1,5 @@
 import { styled } from "../src"
-import { describe, test, expect, expectTypeOf, assertType } from "vitest"
+import { describe, test, expect, assertType } from "vitest"
 import { render } from "@solidjs/testing-library"
 import { DOMElements } from "solid-js/web"
 
@@ -88,7 +88,7 @@ describe("styled", () => {
     })
 
     test("props can be referenced in components", () => {
-      const Linked = styled.a.attrs((props) => ({
+      const Linked = styled.a.attrs<{}>((props) => ({
         href: (props.href ?? "") + "/daddy",
         children: (props.children ?? "") + ", Daddy?",
       }))``
@@ -99,6 +99,20 @@ describe("styled", () => {
       }) as HTMLAnchorElement
       expect(element).toBeVisible()
       expect(element.href).contains("/go/daddy")
+    })
+
+    test("props can be referenced in components", () => {
+      const Linked = styled.a.attrs<{ issues?: boolean }>((props) => ({
+        href: props.issues ? "/daddy" : "",
+        children: props.issues ? "Daddy?" : "",
+      }))``
+
+      const screen = render(() => <Linked issues={true} />)
+      const element = screen.getByRole("link", {
+        name: "Daddy?",
+      }) as HTMLAnchorElement
+      expect(element).toBeVisible()
+      expect(element.href).contains("/daddy")
     })
   })
 

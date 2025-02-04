@@ -44,6 +44,24 @@ export interface StyleableCallable<OuterProps extends {}> {
 }
 
 export interface StyleableMethods<OuterProps extends {}> {
+  // https://github.com/styled-components/styled-components/blob/main/packages/styled-components/src/constructors/constructWithOptions.ts
+  // todo: can we check the input props to see if we've used them?
+  // if the return contains props that are part of the component (not new ones)
+  // then enforce that users need to add their own types.
+  attrs<
+    RequiredProps extends {} = Partial<OuterProps>,
+    PrivateAttrsReturn extends Partial<OuterProps> = Partial<OuterProps>
+  >(
+    attrs: (
+      props: Substitute<OuterProps, RequiredProps>
+    ) => Partial<OuterProps> & PrivateAttrsReturn
+  ): Styleable<
+    Substitute<
+      FastOmit<OuterProps, keyof Required<PrivateAttrsReturn>>,
+      RequiredProps
+    >
+  >
+
   /**
    * @summary
    * Create a new Styleable with props which override props provided by users.
@@ -66,17 +84,27 @@ export interface StyleableMethods<OuterProps extends {}> {
    * const Second = () => <Component href="/world" />
    * ```
    */
-  attrs<InnerProps extends Partial<OuterProps> & {}>(
+  attrs<InnerProps extends Partial<OuterProps> = never>(
     attrs: InnerProps
   ): Styleable<FastOmit<OuterProps, keyof InnerProps>>
-
-  // todo: can we check the input props to see if we've used them?
-  // if the return contains props that are part of the component (not new ones)
-  // then enforce that users need to add their own types.
-  attrs<InnerProps extends Partial<OuterProps> & {}>(
-    attrs: (props: OuterProps) => InnerProps
-  ): Styleable<Substitute<OuterProps, InnerProps>>
 }
+
+// How do i want attrs to work?
+// I want to use it as composition for styled arguments,
+// without passing to child component. that's the challenge.
+// would need another set of props. let's ignor ethat for now.
+
+// leave props
+// .attrs<{ name?: string }>({ })
+
+// remove props
+// .attrs<{ name: string }>({ name: "string" })
+
+// add arg, remove children
+// .attrs((props: { name: string }) => ({ children: props.name }))
+
+// add arg with props, remove children
+// .attrs<{name: string}>((props) => ({ children: props.name }))
 
 export interface Styleable<OuterProps extends {}>
   extends StyleableCallable<OuterProps>,
