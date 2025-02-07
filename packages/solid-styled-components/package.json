@@ -2,20 +2,20 @@
   "name": "solid-styled-components",
   "version": "0.0.0",
   "type": "module",
-  "main": "./dist/index/index.common.js",
-  "module": "./dist/index/index.module.js",
-  "types": "./dist/index/index.d.ts",
+  "main": "./dist/esm/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist/"
   ],
   "exports": {
     ".": {
-      "types": "./dist/index/index.d.ts",
-      "solid": "./dist/index/index.jsx",
-      "browser": "./dist/index/index.module.js",
-      "require": "./dist/index/index.module.js",
-      "node": "./dist/index/index.module.js",
-      "import": "./dist/index/index.module.js"
+      "types": "./dist/types/index.d.ts",
+      "solid": "./dist/source/index.jsx",
+      "browser": "./dist/esm/index.js",
+      "require": "./dist/esm/index.js",
+      "node": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
   "devDependencies": {

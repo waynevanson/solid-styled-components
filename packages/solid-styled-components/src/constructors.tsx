@@ -1,5 +1,6 @@
+import * as goober from "goober"
 import { ComponentProps, createMemo, JSX, mergeProps } from "solid-js"
-import { Dynamic } from "solid-js/web"
+import { Dynamic, isServer, spread } from "solid-js/web"
 import { createClassName } from "./class-name"
 import { useTheme } from "./context"
 import { attrs } from "./methods"
@@ -11,8 +12,10 @@ import {
   StyledArgsProperty,
   StyledComponent,
   StyledProps,
-  Substitute,
 } from "./types"
+import { StyledArgsTemplate } from "./styles"
+
+// how to do as?
 
 /**
  * @summary
@@ -115,7 +118,23 @@ function functionalise<OuterProps extends {}>(
   callable: StyleableCallable<OuterProps>
 ): Styleable<OuterProps> {
   return Object.assign(callable, {
-    attrs: <InnerProps extends Partial<OuterProps>>(attrs_: InnerProps) =>
-      functionalise(attrs(callable, attrs_)),
+    attrs<InnerProps extends Partial<OuterProps>>(attrs_: InnerProps) {
+      return functionalise(attrs(callable, attrs_))
+    },
   } satisfies StyleableMethods<OuterProps>)
+}
+
+// create untracked context, adding it to a div in client and in browser
+// what do on th eserver? Just add it like a normal component?
+export function createGlobalStyles(...styles: StyledArgsTemplate<{}>) {
+  const className = goober.css.apply({ g: 1 }, styles as never)
+  if (isServer) {
+    return <div class={className} />
+  } else {
+    // don't hydrate
+    const element = document.createElement("div")
+    spread(element, { class: className })
+
+    return null
+  }
 }
