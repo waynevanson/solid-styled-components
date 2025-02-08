@@ -1,4 +1,5 @@
-import { Component } from "solid-js"
+import { JSX } from "solid-js"
+import { PolymorphicComponent } from "./tag"
 
 /**
  * @summary
@@ -7,9 +8,14 @@ import { Component } from "solid-js"
  * @param contramap A mapping function but in reverse.
  * @returns A component
  */
-export function contramap<PrevProps extends {}, NextProps extends {}>(
-  Target: Component<PrevProps>,
+export function contramap<
+  Tag extends keyof JSX.IntrinsicElements,
+  PrevProps extends {},
+  NextProps extends {}
+>(
+  Target: PolymorphicComponent<Tag, PrevProps>,
   contramap: (next: NextProps) => PrevProps
-): Component<NextProps> {
+): PolymorphicComponent<Tag, NextProps> {
+  //@ts-ignore
   return (next) => <Target {...contramap(next)} />
 }
