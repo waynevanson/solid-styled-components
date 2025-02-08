@@ -58,26 +58,29 @@ export function createClassName<Props extends Record<string, any>>(
   const theme = useTheme()
 
   const classNameFromProps = createMemo(
-    () => ("class" in props && props.class) || ""
+    () => ("class" in props && (props.class as string)) || ""
   )
 
   const context = createMemo(
     (): GooberContext => ({
-      // append
+      // append mode when we're there already exists a goober class.
       o: GOOBER_CLASS_REGEXP.test(classNameFromProps()),
+      // provide style access to the theme.
       p: mergeProps(props, { theme }),
     })
   )
 
-  const [identifiers, identifiersSet] = createSignal(new Set())
-
+  // add styles to a stylesheet created from Goober,
+  // returning class created for styles.
+  const [classNameFromGoober, classNameFromGooberSet] = createSignal("")
   createEffect(() => {
-    const classNames = css.apply(context, styles as never)
-    identifiersSet(new Set(classNames))
+    const className = css.apply(context, styles as never)
+    classNameFromGooberSet(className)
   })
 
+  // Create class by appending the previous class name with the new class name.
   const className = createMemo(() =>
-    [classNameFromProps(), Array.from(identifiers())].filter(Boolean).join(" ")
+    [classNameFromProps(), classNameFromGoober()].filter(Boolean).join(" ")
   )
 
   return className

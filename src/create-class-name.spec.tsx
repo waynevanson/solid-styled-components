@@ -28,4 +28,10 @@ describe(createClassName, () => {
       renderHook(() => createClassName({}, [template`sdsds,${""}`]))
     })
   })
+
+  test.todo("should create a classname when it does not exist")
+
+  test.todo("should append a normal classname")
+
+  test.todo("should append a goober classname")
 })
