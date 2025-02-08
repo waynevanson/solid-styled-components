@@ -1,6 +1,7 @@
 import { css } from "goober"
-import { createEffect, createMemo, createSignal } from "solid-js"
+import { createEffect, createMemo, createSignal, mergeProps } from "solid-js"
 import { StyledArgs } from "./style"
+import { useTheme } from "./theme"
 
 type GooberFlags =
   | {
@@ -50,10 +51,12 @@ const GOOBER_CLASS_REGEXP = /^go[0-9]+/
  * @param styles
  * @returns
  */
-export function createClassName<ThemedProps>(
-  props: { class?: string | undefined } & ThemedProps,
-  styles: StyledArgs<ThemedProps>
+export function createClassName<Props extends Record<string, any>>(
+  props: Props,
+  styles: StyledArgs<Props>
 ) {
+  const theme = useTheme()
+
   const classNameFromProps = createMemo(
     () => ("class" in props && props.class) || ""
   )
@@ -62,7 +65,7 @@ export function createClassName<ThemedProps>(
     (): GooberContext => ({
       // append
       o: GOOBER_CLASS_REGEXP.test(classNameFromProps()),
-      p: props,
+      p: mergeProps(props, { theme }),
     })
   )
 
