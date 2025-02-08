@@ -7,6 +7,5 @@ export default defineConfig({
   resolve: { conditions: ["development", "browser"] },
   test: {
     server: { deps: { inline: true } },
-    coverage: { provider: "istanbul" },
   },
 })
