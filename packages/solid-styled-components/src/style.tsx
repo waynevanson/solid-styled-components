@@ -1,4 +1,29 @@
 import { CSSAttribute } from "goober"
+import { Component, mergeProps } from "solid-js"
+import { createClassName } from "./create-class-name"
+
+/**
+ * @summary
+ *
+ * @description
+ * 1. Creates a class in a stylesheet on the window.
+ * 2. Append that class to the components props.
+ * 3. Return the component.
+ *
+ * @param component
+ * @param styles
+ * @returns
+ */
+export function style<Props extends Record<string, any>>(
+  component: Component<Props>,
+  styles: StyledArgs<Props>
+): Component<Props> {
+  return (props) => {
+    const className = createClassName(props, styles)
+    const newprops = mergeProps(props, { class: className() }) as never
+    return component(newprops)
+  }
+}
 
 export type TemplateExpressionValue = string | number | null | undefined | false
 
