@@ -3,7 +3,25 @@ export type {
   ThemeProvider,
   ThemeProviderProps,
   useTheme,
+  DefaultTheme,
 } from "./theme"
 export { contramap } from "./contramap"
-export { style } from "./style"
-export { tag } from "./tag"
+export type {
+  style,
+  OneOrMany,
+  StyleArg,
+  StyleArgSingle,
+  StyleArgValue,
+  StyledArgs,
+  StyledArgsStyles,
+  StyledArgsTemplate,
+  TemplateExpression,
+  TemplateExpressionValue,
+} from "./style"
+export type {
+  tag,
+  PolymorphicComponent,
+  FastOmit,
+  PolymorphicProps,
+  PolymorphicPropsMorphed,
+} from "./tag"
