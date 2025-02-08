@@ -2,7 +2,7 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/solid-styled-components/tsconfig.json"
+      "path": "./packages/solid-styled-components"
     },
     {
       "path": "./apps/playground/tsconfig.json"
