@@ -1,6 +1,6 @@
 import { JSX } from "solid-js"
 import { PolymorphicComponent, tag } from "./tag.jsx"
-import { style, StyledArgs } from "./style.jsx"
+import { StyledArgs, styler } from "./style.jsx"
 import { contramap } from "./contramap.jsx"
 
 export function createStyleable<
@@ -25,7 +25,7 @@ export function createStyleable<
   const Component = () =>
     typeof tagOrComponent === "string" ? tag(tagOrComponent) : tagOrComponent
 
-  return (...styles: StyledArgs<Props>) => style(Component(), styles)
+  return (...styles: StyledArgs<Props>) => styler(Component(), styles)
 }
 
 export interface StyleableApply<

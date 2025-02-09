@@ -14,7 +14,7 @@ import { createClassName } from "./create-class-name.js"
  * @param styles
  * @returns
  */
-function styler<Props extends Record<string, any>>(
+export function styler<Props extends Record<string, any>>(
   Component: Component<Props>,
   styles: StyledArgs<Props>
 ): Component<Props> {
@@ -58,12 +58,7 @@ export function style<Props extends Record<string, any>>(
 
 export function style<Props extends Record<string, any>>(
   component: Component<Props>,
-  styles: StyleArg<Props>
-): Component<Props>
-
-export function style<Props extends Record<string, any>>(
-  component: Component<Props>,
-  styles: ReadonlyArray<StyleArgSingle<Props>>
+  styles: ReadonlyArray<StyleArgSingle<Props>> | StyleArg<Props>
 ): Component<Props>
 
 export function style(...args: Array<any>) {
