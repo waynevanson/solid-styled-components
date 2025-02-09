@@ -58,7 +58,7 @@ export function style<Props extends Record<string, any>>(
 
 export function style<Props extends Record<string, any>>(
   component: Component<Props>,
-  styles: StyledArgs<Props>
+  styles: StyleArg<Props>
 ): Component<Props>
 
 export function style<Props extends Record<string, any>>(
