@@ -1,5 +1,10 @@
+/**
+ * @summary
+ * Yeah bro whats going on!
+ */
+
 import { JSX } from "solid-js"
-import { PolymorphicComponent } from "./tag"
+import { PolymorphicComponent } from "./tag.jsx"
 
 /**
  * @summary

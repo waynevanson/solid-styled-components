@@ -1,7 +1,7 @@
 import { JSX } from "solid-js"
-import { PolymorphicComponent, tag } from "./tag"
-import { style, StyledArgs } from "./style"
-import { contramap } from "./contramap"
+import { PolymorphicComponent, tag } from "./tag.jsx"
+import { style, StyledArgs } from "./style.jsx"
+import { contramap } from "./contramap.jsx"
 
 export function createStyleable<
   Tag extends keyof JSX.IntrinsicElements,

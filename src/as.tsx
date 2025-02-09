@@ -1,6 +1,6 @@
 import { JSX, mergeProps } from "solid-js"
-import { PolymorphicComponent, PolymorphicPropsMorphed } from "./tag"
-import { contramap } from "./contramap"
+import { PolymorphicComponent, PolymorphicPropsMorphed } from "./tag.jsx"
+import { contramap } from "./contramap.jsx"
 
 export function as<
   Tag extends keyof JSX.IntrinsicElements,

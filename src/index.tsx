@@ -1,4 +1,4 @@
-export { contramap } from "./contramap"
+export { contramap } from "./contramap.jsx"
 export type {
   OneOrMany,
   style,
@@ -10,7 +10,7 @@ export type {
   StyledArgsTemplate,
   TemplateExpression,
   TemplateExpressionValue,
-} from "./style"
+} from "./style.jsx"
 export type {
   Styleable,
   StyleableApply,
@@ -18,15 +18,15 @@ export type {
   Styled,
   StyledApply,
   StyledTag,
-} from "./styled"
-export { styled } from "./styled"
+} from "./styled.js"
+export { styled } from "./styled.js"
 export type {
   FastOmit,
   PolymorphicComponent,
   PolymorphicProps,
   PolymorphicPropsMorphed,
-} from "./tag"
-export { tag } from "./tag"
-export { ThemeContext, ThemeProvider, useTheme } from "./theme"
-export { as } from "./as"
-export type { DefaultTheme, ThemeProviderProps } from "./theme"
+} from "./tag.jsx"
+export { tag } from "./tag.jsx"
+export { ThemeContext, ThemeProvider, useTheme } from "./theme.jsx"
+export { as } from "./as.jsx"
+export type { DefaultTheme, ThemeProviderProps } from "./theme.jsx"

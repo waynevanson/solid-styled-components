@@ -1,7 +1,7 @@
 import { css } from "goober"
 import { createEffect, createMemo, createSignal, mergeProps } from "solid-js"
-import { StyledArgs } from "./style"
-import { useTheme } from "./theme"
+import { StyledArgs } from "./style.jsx"
+import { useTheme } from "./theme.jsx"
 
 type GooberFlags =
   | {

@@ -1,6 +1,6 @@
 import { CSSAttribute } from "goober"
 import { Component, mergeProps } from "solid-js"
-import { createClassName } from "./create-class-name"
+import { createClassName } from "./create-class-name.js"
 
 /**
  * @summary

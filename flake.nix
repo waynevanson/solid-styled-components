@@ -17,6 +17,7 @@
           direnv
           nodejs
           pnpm
+          deno    
         ];
       in {
         devShells.default =
