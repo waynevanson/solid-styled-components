@@ -1,14 +1,7 @@
-export type {
-  ThemeContext,
-  ThemeProvider,
-  ThemeProviderProps,
-  useTheme,
-  DefaultTheme,
-} from "./theme"
 export { contramap } from "./contramap"
 export type {
-  style,
   OneOrMany,
+  style,
   StyleArg,
   StyleArgSingle,
   StyleArgValue,
@@ -19,9 +12,21 @@ export type {
   TemplateExpressionValue,
 } from "./style"
 export type {
-  tag,
-  PolymorphicComponent,
+  Styleable,
+  StyleableApply,
+  StyleableBound,
+  Styled,
+  StyledApply,
+  StyledTag,
+} from "./styled"
+export { styled } from "./styled"
+export type {
   FastOmit,
+  PolymorphicComponent,
   PolymorphicProps,
   PolymorphicPropsMorphed,
 } from "./tag"
+export { tag } from "./tag"
+export { ThemeContext, ThemeProvider, useTheme } from "./theme"
+export { as } from "./as"
+export type { DefaultTheme, ThemeProviderProps } from "./theme"

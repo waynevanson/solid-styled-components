@@ -10,18 +10,19 @@ import { createClassName } from "./create-class-name"
  * 2. Append that class to the components props.
  * 3. Return the component.
  *
- * @param component
+ * @param Component
  * @param styles
  * @returns
  */
 function styler<Props extends Record<string, any>>(
-  component: Component<Props>,
+  Component: Component<Props>,
   styles: StyledArgs<Props>
 ): Component<Props> {
   return (props) => {
     const className = createClassName(props, styles)
-    const newprops = mergeProps(props, { class: className() }) as never
-    return component(newprops)
+
+    //@ts-ignore
+    return <Component {...mergeProps(props, { class: className() })} />
   }
 }
 
