@@ -32,10 +32,7 @@ export interface StyleableApply<
   Tag extends keyof JSX.IntrinsicElements,
   Props extends Record<string, any>
 > {
-  (...style: StyledArgs<JSX.IntrinsicElements[Tag]>): PolymorphicComponent<
-    Tag,
-    Props
-  >
+  (...style: StyledArgs<Props>): PolymorphicComponent<Tag, Props>
 }
 
 export interface StyleableBound<
@@ -78,6 +75,7 @@ function bind<
     contramap<NextProps extends Record<string, any>>(
       fn: (next: NextProps) => Props
     ): Styleable<Tag, NextProps> {
+      //@ts-ignore todo; fix
       return bind((...styles) => contramap(styleable(...styles), fn))
     },
   })
