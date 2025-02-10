@@ -26,27 +26,33 @@ export function styler<Props extends Record<string, any>>(
   }
 }
 
+// style template strings
+
 export type TemplateExpressionValue = string | number | null | undefined | false
 
 export type TemplateExpression<OuterProps> =
   | ((props: OuterProps) => TemplateExpressionValue)
   | TemplateExpressionValue
 
-export type StyleArgValue = CSSAttribute | string
-export type OneOrMany<T> = T | ReadonlyArray<T>
-export type StyleArgSingle<OuterProps> =
-  | StyleArgValue
-  | ((props: OuterProps) => StyleArgValue)
-
-export type StyleArg<OuterProps> = OneOrMany<StyleArgSingle<OuterProps>>
-
-export type StyledArgsTemplate<ThemedProps> = readonly [
+export type StyledArgsTemplate<Props> = readonly [
   styles: TemplateStringsArray,
-  ...expressions: ReadonlyArray<ThemedProps>
+  ...expressions: ReadonlyArray<TemplateExpression<Props>>
 ]
+
+// style objects
+
+export type StyleArgValue = CSSAttribute | string
+export type StyleArgSingle<Props> =
+  | StyleArgValue
+  | ((props: Props) => StyleArgValue)
+
+export type OneOrMany<T> = T | ReadonlyArray<T>
+export type StyleArg<Props> = OneOrMany<StyleArgSingle<Props>>
 
 export type StyledArgsStyles<ThemedProps> =
   | readonly [styles: StyleArg<ThemedProps>]
+
+// union
 
 export type StyledArgs<ThemedProps> =
   | StyledArgsStyles<ThemedProps>
