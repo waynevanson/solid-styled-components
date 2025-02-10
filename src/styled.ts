@@ -44,7 +44,7 @@ export interface StyleableBound<
 > {
   contramap<NextProps extends Record<string, any>>(
     fn: (next: NextProps) => Props
-  ): Styleable<Tag, Props>
+  ): Styleable<Tag, NextProps>
 }
 
 export interface Styleable<
