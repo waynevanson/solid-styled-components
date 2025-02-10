@@ -8,15 +8,11 @@ export function createStyleable<
   Props extends Record<string, any>
 >(
   component: PolymorphicComponent<Tag, Props>
-): (
-  ...style: StyledArgs<JSX.IntrinsicElements[Tag]>
-) => PolymorphicComponent<Tag, Props>
+): (...style: StyledArgs<Props>) => PolymorphicComponent<Tag, Props>
 
 export function createStyleable<Tag extends keyof JSX.IntrinsicElements>(
   tag: Tag
-): (
-  ...style: StyledArgs<JSX.IntrinsicElements[Tag]>
-) => PolymorphicComponent<Tag, JSX.IntrinsicElements[Tag]>
+): Styleable<Tag, JSX.IntrinsicElements[Tag]>
 
 export function createStyleable<
   Tag extends keyof JSX.IntrinsicElements,
